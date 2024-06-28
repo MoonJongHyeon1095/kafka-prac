@@ -5,7 +5,13 @@ import { Injectable } from '@nestjs/common';
 export class OrderService {
   constructor(private readonly kafkaService: KafkaService) {}
 
-  async sendMessage(message: string) {
-    return this.kafkaService.sendMessage(message);
+  async sendMessage(message: string, partition: number) {
+    try {
+      await this.kafkaService.sendMessage(message, partition);
+      console.log('Message sent successfully');
+    } catch (err) {
+      console.error('Error sending message', err);
+      throw err;
+    }
   }
 }
